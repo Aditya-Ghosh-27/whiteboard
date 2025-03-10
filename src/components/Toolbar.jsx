@@ -2,20 +2,27 @@ import { useState } from "react"
 import classes from "./Toolbar.module.css"
 import cx from "classnames";
 
+import { FaSlash } from "react-icons/fa";
+import { LuRectangleHorizontal } from "react-icons/lu";
+
 const Toolbar = () => {
-  const [activeToolItem, setActiveToolItem] = useState("A");
+  const [activeToolItem, setActiveToolItem] = useState("LINE");
   return (
     <div className={classes.container}>
       <div 
         className={
-          cx(classes.toolItem, {[classes.active]: activeToolItem === "A" })
+          cx(classes.toolItem, {[classes.active]: activeToolItem === "LINE" })
           }
-          onClick={() => setActiveToolItem("A")}>A</div>
+          onClick={() => setActiveToolItem("LINE")}>
+            <FaSlash />
+          </div>
       <div 
         className={
-          cx(classes.toolItem, {[classes.active]: activeToolItem === "B" })
+          cx(classes.toolItem, {[classes.active]: activeToolItem === "RECTANGLE" })
         }
-        onClick={() => setActiveToolItem("B")}>B</div>
+        onClick={() => setActiveToolItem("RECTANGLE")}>
+          <LuRectangleHorizontal />
+        </div>
     </div>
   )
 }
