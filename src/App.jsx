@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import rough from "roughjs";
 
 function App(){
   const canvasRef = useRef();
@@ -8,8 +9,13 @@ function App(){
     canvas.height = window.innerHeight;
     const context = canvas.getContext("2d");
 
-    context.fillStyle = "#FF0000";
-    context.fillRect(0, 0, 150, 75);
+    let roughCanvas = rough.canvas(canvas);
+    let generator = roughCanvas.generator;
+    let rect1 = generator.rectangle(10, 10, 100, 100);
+    let rect2 = generator.rectangle(10, 120, 100, 100, { fill: "blue" });
+    roughCanvas.draw(rect1);
+    roughCanvas.draw(rect2);
+
   }, []);
   return(
     <div className="App">
