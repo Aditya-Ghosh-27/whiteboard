@@ -1,8 +1,9 @@
-import React, { useReducer } from "react";
+import React, { useContext, useReducer } from "react";
 import PropTypes, { element } from "prop-types";
 import boardContext from "./board-context";
 import { BOARD_ACTIONS, TOOL_ACTION_TYPES, TOOL_ITEMS } from "../constants";
 import { createRoughElement } from "../utils/elements";
+import toolboxContext from "./toolbox-context";
 
 const boardReducer = (state, action) => {
   switch (action.type) {
@@ -13,14 +14,14 @@ const boardReducer = (state, action) => {
       };
     };
     case BOARD_ACTIONS.DRAW_DOWN: {
-      const {clientX, clientY} = action.payload;
+      const {clientX, clientY, stroke, fill } = action.payload;
       const newElement = createRoughElement(
         state.elements.length, 
         clientX, 
         clientY, 
         clientX, 
         clientY, 
-        { type: state.activeToolItem }
+        { type: state.activeToolItem, stroke, fill }
       );
       const prevElements = state.elements;
       return {
@@ -30,12 +31,14 @@ const boardReducer = (state, action) => {
       }
     }
     case BOARD_ACTIONS.DRAW_MOVE: {
-      const {clientX, clientY} = action.payload;
+      const { clientX, clientY } = action.payload;
       const newElements = [...state.elements];
       const index = state.elements.length - 1;
-      const {x1, y1} = newElements[index];
+      const { x1, y1, stroke, fill } = newElements[index];
       const newElement = createRoughElement(index, x1, y1, clientX, clientY, {
         type: state.activeToolItem,
+        stroke,
+        fill,
       });
       newElements[index] = newElement
       return {
@@ -65,8 +68,8 @@ const BoardProvider = ({ children }) => {
     boardReducer,
     intialBoardState
   );
-  // const [activeToolItem, setActiveToolItem] = useState(TOOL_ITEMS.LINE);
-  // const [elements, setElements] = useState([]);
+
+  const { toolboxState } = useContext(toolboxContext);
 
   const changeToolHandler = (tool) => {
     dispatchBoardAction({
@@ -77,13 +80,15 @@ const BoardProvider = ({ children }) => {
     });
   };
 
-  const boardMouseDownHandler = (event) => {
+  const boardMouseDownHandler = (event, toolboxState) => {
     const {clientX, clientY } = event;
     dispatchBoardAction({
       type: BOARD_ACTIONS.DRAW_DOWN,
       payload: {
         clientX,
         clientY,
+        stroke: toolboxState[boardState.activeToolItem]?.stroke,
+        fill: toolboxContext[boardState.activeToolItem]?.fill,
       }
     })
   };
