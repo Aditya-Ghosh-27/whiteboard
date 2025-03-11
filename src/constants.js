@@ -7,16 +7,16 @@ export const TOOL_ITEMS = {
     ERASER: "ERASER",
     TEXT: "TEXT",
     RESIZE: "RESIZE",
-  };
+};
   
-  export const TOOL_ACTION_TYPES = {
+export const TOOL_ACTION_TYPES = {
     NONE: "NONE",
     DRAWING: "DRAWING",
     ERASING: "ERASING",
     WRITING: "WRITING",
-  };
+};
   
-  export const BOARD_ACTIONS = {
+export const BOARD_ACTIONS = {
     CHANGE_TOOL: "CHANGE_TOOL",
     DRAW_DOWN: "DRAW_DOWN",
     DRAW_MOVE: "DRAW_MOVE",
@@ -27,9 +27,9 @@ export const TOOL_ITEMS = {
     UNDO: "UNDO",
     REDO: "REDO",
     RELOAD: "RELOAD"
-  };
+};
   
-  export const COLORS = {
+export const COLORS = {
     BLACK: "#000000",
     RED: "#ff0000",
     GREEN: "#00ff00",
@@ -37,30 +37,30 @@ export const TOOL_ITEMS = {
     ORANGE: "#ffa500",
     YELLOW: "#ffff00",
     WHITE: "#ffffff",
-  };
+};
   
-  export const TOOLBOX_ACTIONS = {
+export const TOOLBOX_ACTIONS = {
     CHANGE_STROKE: "CHANGE_STROKE",
     CHANGE_FILL: "CHANGE_FILL",
     CHANGE_SIZE: "CHANGE_SIZE",
-  };
+};
   
-  export const FILL_TOOL_TYPES = [TOOL_ITEMS.RECTANGLE, TOOL_ITEMS.CIRCLE];
-  export const STROKE_TOOL_TYPES = [
+export const FILL_TOOL_TYPES = [TOOL_ITEMS.RECTANGLE, TOOL_ITEMS.CIRCLE];
+export const STROKE_TOOL_TYPES = [
     TOOL_ITEMS.BRUSH,
     TOOL_ITEMS.LINE,
     TOOL_ITEMS.ARROW,
     TOOL_ITEMS.RECTANGLE,
     TOOL_ITEMS.CIRCLE,
     TOOL_ITEMS.TEXT,
-  ];
-  export const SIZE_TOOL_TYPES = [
+];
+export const SIZE_TOOL_TYPES = [
     TOOL_ITEMS.LINE,
     TOOL_ITEMS.ARROW,
     TOOL_ITEMS.RECTANGLE,
     TOOL_ITEMS.CIRCLE,
     TOOL_ITEMS.TEXT,
-  ];
+];
   
-  export const ARROW_LENGTH = 20;
-  export const ELEMENT_ERASE_THRESHOLD = 0.1;
+export const ARROW_LENGTH = 20;
+export const ELEMENT_ERASE_THRESHOLD = 0.1;
