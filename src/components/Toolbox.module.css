@@ -1,4 +1,4 @@
-@import "tailwindcss";
+/* @import "tailwindcss"; */
 .container {
   @apply absolute top-1/2 left-5 text-sm border border-gray-400;
   transform: translateY(-50%);

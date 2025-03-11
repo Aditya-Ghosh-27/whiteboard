@@ -4,12 +4,15 @@ import toolboxContext from "./toolbox-context";
 import { COLORS, TOOL_ITEMS } from '../constants';
 
 function toolboxReducer (state, action) {
-    // switch(action.type) {
-    //     case value:
-    //         break;
-    //     default:
-    //         break;
-    // }
+    switch(action.type) {
+        case "CHANGE_STROKE": {
+            const newState = {...state};
+            newState[action.payload.tool].stroke = action.payload.stroke;
+            return newState;
+        }
+        default:
+            return state;
+    }
 }
 
 const initialToolboxState = {
@@ -37,9 +40,20 @@ const initialToolboxState = {
 const ToolboxProvider = ({ children }) => {
     const [toolboxState, dispatchToolboxAction] = useReducer(toolboxReducer, initialToolboxState);
 
+    const changeStrokeHandler = (tool, stroke) => {
+        dispatchToolboxAction({
+            type: "CHANGE_STROKE",
+            payload: {
+                tool, 
+                stroke,
+            }
+        })
+    }
+
     const toolboxContextValue = {
         toolboxState,
-
+        changeStroke: changeStrokeHandler,
+        
     }
   return (
     <toolboxContext.Provider value={toolboxContextValue}>

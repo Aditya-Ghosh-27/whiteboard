@@ -1,5 +1,7 @@
 import { createContext } from "react";
 
-const toolboxContext = createContext({});
+const toolboxContext = createContext({
+    toolboxState: {},
+});
 
 export default toolboxContext;
