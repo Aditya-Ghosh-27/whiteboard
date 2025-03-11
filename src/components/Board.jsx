@@ -16,8 +16,14 @@ function Board(){
         roughCanvas.draw(rect1);
         roughCanvas.draw(rect2);
     }, []);
+
+    const handleBoardMouseDown = (event) => {
+        const clientX = event.clientX;
+        const clientY = event.clientY;
+        console.log(clientX, clientY);
+    }
     return(
-        <canvas ref={canvasRef}/>
+        <canvas ref={canvasRef} onMouseDown={handleBoardMouseDown}/>
     );
 }
 
