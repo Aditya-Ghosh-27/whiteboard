@@ -1,53 +1,84 @@
-import React, { useReducer } from "react"
-import PropTypes from 'prop-types'
-import boardContext from './board-context'
-import { TOOL_ITEMS } from '../constants'
+import React, { useReducer } from "react";
+import rough from "roughjs/bin/rough"
+import PropTypes from "prop-types";
+import boardContext from "./board-context";
+import { TOOL_ITEMS } from "../constants";
 
+const gen = rough.generator();
 const boardReducer = (state, action) => {
-  switch(action.type){
+  switch (action.type) {
     case "CHANGE_TOOL":
       return {
         ...state,
         activeToolItem: action.payload.tool,
       };
+    case "DRAW_DOWN":
+      const {clientX, clientY} = action.payload;
+      const newElement = {
+        id: state.elements.length,
+        x1: clientX,
+        y1: clientY,
+        x2: clientX,
+        y2: clientY,
+        roughEle: gen.line(clientX, clientY, clientX, clientY),
+      };
+      const prevElements = state.elements;
+      return {
+        ...state,
+        elements: [ ...prevElements, newElement]
+      }
     default:
       return state;
   }
-}
+};
 
 const intialBoardState = {
   activeToolItem: TOOL_ITEMS.LINE,
   elements: [],
-}
+};
 
-const BoardProvider = ({children}) => {
+const BoardProvider = ({ children }) => {
   const [boardState, dispatchBoardAction] = useReducer(
-    boardReducer, 
+    boardReducer,
     intialBoardState
   );
-    // const [activeToolItem, setActiveToolItem] = useState(TOOL_ITEMS.LINE);
-    // const [elements, setElements] = useState([]);
+  // const [activeToolItem, setActiveToolItem] = useState(TOOL_ITEMS.LINE);
+  // const [elements, setElements] = useState([]);
 
-    const handleToolItemClick = (tool) => {
-        dispatchBoardAction({ type: "CHANGE_TOOL", payload: {
-          tool,
-        }})
-    };
-    
-    const boardContextValue = {
-        activeToolItem: boardState.activeToolItem, 
-        handleToolItemClick, 
-    };
+  const handleToolItemClick = (tool) => {
+    dispatchBoardAction({
+      type: "CHANGE_TOOL",
+      payload: {
+        tool,
+      },
+    });
+  };
+
+  const boardMouseDownHandler = (event) => {
+    const {clientX, clientY} = event;
+    dispatchBoardAction({
+      type: "DRAW_DOWN",
+      payload: {
+        clientX,
+        clientY,
+      }
+    })
+  };
+
+  const boardContextValue = {
+    activeToolItem: boardState.activeToolItem,
+    elements: boardState.elements,
+    handleToolItemClick,
+    boardMouseDownHandler,
+  };
   return (
-    <boardContext.Provider
-        value={boardContextValue}
-    >
-        {children}
+    <boardContext.Provider value={boardContextValue}>
+      {children}
     </boardContext.Provider>
-  )
-}
+  );
+};
 BoardProvider.propTypes = {
   children: PropTypes.node.isRequired,
-}
+};
 
-export default BoardProvider
+export default BoardProvider;
