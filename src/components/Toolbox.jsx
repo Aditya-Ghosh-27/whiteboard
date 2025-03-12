@@ -11,7 +11,9 @@ const Toolbox = () => {
 
   const strokeColor = toolboxState[activeToolItem]?.stroke;
   const fillColor = toolboxState[activeToolItem]?.fill;
+  
 //   const colorClickHandler = (color) => {};
+
   return (
     <div className={classes.container}>
       {STROKE_TOOL_TYPES.includes(activeToolItem) && (

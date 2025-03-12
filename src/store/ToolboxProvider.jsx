@@ -51,7 +51,7 @@ const ToolboxProvider = ({ children }) => {
             payload: {
                 tool, 
                 stroke,
-            }
+            },
         });
     };
 
@@ -68,7 +68,7 @@ const ToolboxProvider = ({ children }) => {
     const toolboxContextValue = {
         toolboxState,
         changeStroke: changeStrokeHandler,
-        changeFill: changeFillHandler
+        changeFill: changeFillHandler,
     }
   return (
     <toolboxContext.Provider value={toolboxContextValue}>

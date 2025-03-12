@@ -69,7 +69,7 @@ const BoardProvider = ({ children }) => {
     intialBoardState
   );
 
-  const { toolboxState } = useContext(toolboxContext);
+  // const { toolboxState } = useContext(toolboxContext);
 
   const changeToolHandler = (tool) => {
     dispatchBoardAction({
@@ -88,9 +88,9 @@ const BoardProvider = ({ children }) => {
         clientX,
         clientY,
         stroke: toolboxState[boardState.activeToolItem]?.stroke,
-        fill: toolboxContext[boardState.activeToolItem]?.fill,
+        fill: toolboxState[boardState.activeToolItem]?.fill,
       }
-    })
+    });
   };
 
   const boardMouseMoveHandler = (event) => {
