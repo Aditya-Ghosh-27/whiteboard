@@ -1,6 +1,5 @@
 import React, { useReducer } from 'react';
 import PropTypes from 'prop-types';
-import toolboxContext from "./toolbox-context";
 import { COLORS, TOOL_ITEMS, TOOLBOX_ACTIONS } from '../constants';
 
 function toolboxReducer (state, action) {
@@ -13,6 +12,11 @@ function toolboxReducer (state, action) {
         case TOOLBOX_ACTIONS.CHANGE_FILL: {
             const newState = {...state};
             newState[action.payload.tool].fill = action.payload.fill;
+            return newState;
+        }
+        case TOOLBOX_ACTIONS.CHANGE_SIZE: {
+            const newState = {...state};
+            newState[action.payload.tool].size = action.payload.size;
             return newState;
         }
         default:
@@ -65,10 +69,21 @@ const ToolboxProvider = ({ children }) => {
         });
     };
 
+    const changeSizeHandler = (tool, size) => {
+        dispatchToolboxAction({
+            type: TOOLBOX_ACTIONS.CHANGE_SIZE,
+            payload: {
+                tool,
+                size,
+            },
+        });
+    };
+
     const toolboxContextValue = {
         toolboxState,
         changeStroke: changeStrokeHandler,
         changeFill: changeFillHandler,
+        changeSize: changeSizeHandler 
     }
   return (
     <toolboxContext.Provider value={toolboxContextValue}>
