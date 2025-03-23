@@ -1,8 +1,8 @@
-import React, { useCallback, useReducer } from "react";
-import PropTypes, { element } from "prop-types";
+import { useCallback, useReducer } from "react";
+import PropTypes from "prop-types";
 import boardContext from "./board-context";
 import { BOARD_ACTIONS, TOOL_ACTION_TYPES, TOOL_ITEMS } from "../constants";
-import { createRoughElement, isPointNearElement, getSvgPathFromStroke } from "../utils/element";
+import { createElement, isPointNearElement, getSvgPathFromStroke } from "../utils/element";
 import getStroke from "perfect-freehand";
 
 const boardReducer = (state, action) => {
@@ -13,15 +13,14 @@ const boardReducer = (state, action) => {
         activeToolItem: action.payload.tool,
       };
     }
-    case BOARD_ACTIONS.CHANGE_ACTION_TYPE: {
+    case BOARD_ACTIONS.CHANGE_ACTION_TYPE:
       return {
         ...state,
         toolActionType: action.payload.actionType,
       };
-    };
     case BOARD_ACTIONS.DRAW_DOWN: {
       const { clientX, clientY, stroke, fill, size } = action.payload;
-      const newElement = createRoughElement(
+      const newElement = createElement(
         state.elements.length,
         clientX,
         clientY,
@@ -32,13 +31,13 @@ const boardReducer = (state, action) => {
       const prevElements = state.elements;
       return {
         ...state,
-        toolActionType: 
+        toolActionType:
           state.activeToolItem === TOOL_ITEMS.TEXT
-          ? TOOL_ACTION_TYPES.WRITING
-          : TOOL_ACTION_TYPES.DRAWING,
+            ? TOOL_ACTION_TYPES.WRITING
+            : TOOL_ACTION_TYPES.DRAWING,
         elements: [...prevElements, newElement],
       };
-    };
+    }
     case BOARD_ACTIONS.DRAW_MOVE: {
       const { clientX, clientY } = action.payload;
       const newElements = [...state.elements];
@@ -50,25 +49,18 @@ const boardReducer = (state, action) => {
         case TOOL_ITEMS.CIRCLE:
         case TOOL_ITEMS.ARROW: {
           const { x1, y1, stroke, fill, size } = newElements[index];
-          const newElement = createRoughElement(
-            index,
-            x1,
-            y1,
-            clientX,
-            clientY,
-            {
-              type: state.activeToolItem,
-              stroke,
-              fill,
-              size,
-            }
-          );
+          const newElement = createElement(index, x1, y1, clientX, clientY, {
+            type: state.activeToolItem,
+            stroke,
+            fill,
+            size,
+          });
           newElements[index] = newElement;
           return {
             ...state,
             elements: newElements,
           };
-        };
+        }
         case TOOL_ITEMS.BRUSH:
           newElements[index].points = [
             ...newElements[index].points,
@@ -94,12 +86,12 @@ const boardReducer = (state, action) => {
         history: newHistory,
         index: state.index + 1,
       };
-    };
+    }
     case BOARD_ACTIONS.ERASE: {
       const { clientX, clientY } = action.payload;
       let newElements = [...state.elements];
-      newElements = newElements .filter((element) => {
-        return !isPointNearElement(element, clientX, clientY)
+      newElements = newElements.filter((element) => {
+        return !isPointNearElement(element, clientX, clientY);
       });
       const newHistory = state.history.slice(0, state.index + 1);
       newHistory.push(newElements);
@@ -109,7 +101,7 @@ const boardReducer = (state, action) => {
         history: newHistory,
         index: state.index + 1,
       };
-    };
+    }
     case BOARD_ACTIONS.CHANGE_TEXT: {
       const index = state.elements.length - 1;
       const newElements = [...state.elements];
@@ -122,30 +114,30 @@ const boardReducer = (state, action) => {
         elements: newElements,
         history: newHistory,
         index: state.index + 1,
-      }
+      };
     }
     case BOARD_ACTIONS.UNDO: {
-      if(state.index <= 0) return state;
+      if (state.index <= 0) return state;
       return {
         ...state,
         elements: state.history[state.index - 1],
         index: state.index - 1,
-      }
+      };
     }
     case BOARD_ACTIONS.REDO: {
-      if(state.index >= state.history.length - 1) return state;
+      if (state.index >= state.history.length - 1) return state;
       return {
         ...state,
         elements: state.history[state.index + 1],
         index: state.index + 1,
-      }
+      };
     }
     default:
       return state;
   }
 };
 
-const intialBoardState = {
+const initialBoardState = {
   activeToolItem: TOOL_ITEMS.BRUSH,
   toolActionType: TOOL_ACTION_TYPES.NONE,
   elements: [],
@@ -156,7 +148,7 @@ const intialBoardState = {
 const BoardProvider = ({ children }) => {
   const [boardState, dispatchBoardAction] = useReducer(
     boardReducer,
-    intialBoardState
+    initialBoardState
   );
 
   const changeToolHandler = (tool) => {
@@ -169,13 +161,13 @@ const BoardProvider = ({ children }) => {
   };
 
   const boardMouseDownHandler = (event, toolboxState) => {
-    if(boardState.toolActionType === TOOL_ACTION_TYPES.WRITING) return;
+    if (boardState.toolActionType === TOOL_ACTION_TYPES.WRITING) return;
     const { clientX, clientY } = event;
-    if(boardState.activeToolItem === TOOL_ITEMS.ERASER){
+    if (boardState.activeToolItem === TOOL_ITEMS.ERASER) {
       dispatchBoardAction({
         type: BOARD_ACTIONS.CHANGE_ACTION_TYPE,
         payload: {
-          actionType: TOOL_ACTION_TYPES.ERASING
+          actionType: TOOL_ACTION_TYPES.ERASING,
         },
       });
       return;
@@ -195,7 +187,7 @@ const BoardProvider = ({ children }) => {
   const boardMouseMoveHandler = (event) => {
     if (boardState.toolActionType === TOOL_ACTION_TYPES.WRITING) return;
     const { clientX, clientY } = event;
-    if(boardState.toolActionType === TOOL_ACTION_TYPES.DRAWING){
+    if (boardState.toolActionType === TOOL_ACTION_TYPES.DRAWING) {
       dispatchBoardAction({
         type: BOARD_ACTIONS.DRAW_MOVE,
         payload: {
@@ -203,20 +195,20 @@ const BoardProvider = ({ children }) => {
           clientY,
         },
       });
-    } else if(boardState.toolActionType === TOOL_ACTION_TYPES.ERASING) {
+    } else if (boardState.toolActionType === TOOL_ACTION_TYPES.ERASING) {
       dispatchBoardAction({
         type: BOARD_ACTIONS.ERASE,
         payload: {
           clientX,
           clientY,
-        }
-      })
+        },
+      });
     }
   };
 
   const boardMouseUpHandler = () => {
-    if(boardState.toolActionType === TOOL_ACTION_TYPES.WRITING) return;
-    if(boardState.toolActionType === TOOL_ACTION_TYPES.DRAWING){
+    if (boardState.toolActionType === TOOL_ACTION_TYPES.WRITING) return;
+    if (boardState.toolActionType === TOOL_ACTION_TYPES.DRAWING) {
       dispatchBoardAction({
         type: BOARD_ACTIONS.DRAW_UP,
       });
@@ -225,7 +217,7 @@ const BoardProvider = ({ children }) => {
       type: BOARD_ACTIONS.CHANGE_ACTION_TYPE,
       payload: {
         actionType: TOOL_ACTION_TYPES.NONE,
-      }
+      },
     });
   };
 
@@ -240,14 +232,14 @@ const BoardProvider = ({ children }) => {
 
   const boardUndoHandler = useCallback(() => {
     dispatchBoardAction({
-      type: BOARD_ACTIONS.UNDO
+      type: BOARD_ACTIONS.UNDO,
     });
   }, []);
 
   const boardRedoHandler = useCallback(() => {
     dispatchBoardAction({
-      type: BOARD_ACTIONS.REDO
-    })
+      type: BOARD_ACTIONS.REDO,
+    });
   }, []);
 
   const boardContextValue = {
@@ -262,6 +254,7 @@ const BoardProvider = ({ children }) => {
     undo: boardUndoHandler,
     redo: boardRedoHandler,
   };
+
   return (
     <boardContext.Provider value={boardContextValue}>
       {children}
@@ -274,3 +267,14 @@ BoardProvider.propTypes = {
 };
 
 export default BoardProvider;
+
+
+
+
+
+
+
+
+
+
+

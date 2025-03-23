@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import classes from "./Toolbox.module.css";
 import cx from "classnames";
 import {
@@ -20,11 +20,9 @@ const Toolbox = () => {
   const fillColor = toolboxState[activeToolItem]?.fill;
   const size = toolboxState[activeToolItem]?.size;
 
-  //   const colorClickHandler = (color) => {};
-
   return (
     <div className={classes.container}>
-       {STROKE_TOOL_TYPES.includes(activeToolItem) && (
+      {STROKE_TOOL_TYPES.includes(activeToolItem) && (
         <div className={classes.selectOptionContainer}>
           <div className={classes.toolBoxLabel}>Stroke Color</div>
           <div className={classes.colorsContainer}>
@@ -91,7 +89,7 @@ const Toolbox = () => {
           </div>
         </div>
       )}
-       {SIZE_TOOL_TYPES.includes(activeToolItem) && (
+      {SIZE_TOOL_TYPES.includes(activeToolItem) && (
         <div className={classes.selectOptionContainer}>
           <div className={classes.toolBoxLabel}>
             {activeToolItem === TOOL_ITEMS.TEXT ? "Font Size" : "Brush Size"}

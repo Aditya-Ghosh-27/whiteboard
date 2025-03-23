@@ -21,14 +21,14 @@ const Toolbar = () => {
   const { activeToolItem, changeToolHandler, undo, redo } =
     useContext(boardContext);
 
-    const handleDownloadClick = () => {
-      const canvas = document.getElementById("canvas");
-      const data = canvas.toDataURL("image/png");
-      const anchor = document.createElement("a");
-      anchor.href = data;
-      anchor.download = "board.png";
-      anchor.click();
-    };
+  const handleDownloadClick = () => {
+    const canvas = document.getElementById("canvas");
+    const data = canvas.toDataURL("image/png");
+    const anchor = document.createElement("a");
+    anchor.href = data;
+    anchor.download = "board.png";
+    anchor.click();
+  };
 
   return (
     <div className={classes.container}>
