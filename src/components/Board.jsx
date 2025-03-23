@@ -1,12 +1,12 @@
 import { useContext, useEffect, useRef, useLayoutEffect } from "react";
 import rough from "roughjs";
-import { TOOL_ACTION_TYPES, TOOL_ITEMS } from "../constants";
+import { TOOL_ITEMS } from "../constants";
 import boardContext from "../store/board-context";
 import toolboxContext from "../store/toolbox-context";
 
 function Board(){
     const canvasRef = useRef();
-    const { elements, boardMouseDownHandler, boardMouseMoveHandler, boardMouseUpHandler, toolActionType } = useContext(boardContext);
+    const { elements, boardMouseDownHandler, boardMouseMoveHandler, boardMouseUpHandler, undo, redo } = useContext(boardContext);
     const { toolboxState, } = useContext(toolboxContext);
     
     useEffect(() => {
@@ -14,6 +14,20 @@ function Board(){
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
     }, []);
+
+    useEffect(() => {
+        function handleKeyDown(event) {
+            if(event.ctrlKey && event.key === "z"){
+                undo();
+            } else if(event.ctrlKey && event.key === "y"){
+                redo();
+            }
+        }
+        document.addEventListener("keydown", handleKeyDown);
+        return () => {
+            document.removeEventListener("keydown", handleKeyDown);
+        };
+    }, [undo, redo]);
 
     useLayoutEffect(() => {
         const canvas = canvasRef.current;
@@ -49,9 +63,7 @@ function Board(){
     };
 
     const handleMouseMove = (event) => {
-        if(toolActionType === TOOL_ACTION_TYPES.DRAWING){
-            boardMouseMoveHandler(event);
-        }
+        boardMouseMoveHandler(event);
     };
 
     const handleMouseUp = () => {
