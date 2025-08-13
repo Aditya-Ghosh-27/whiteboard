@@ -8,7 +8,7 @@ import {
   FaArrowRight,
   FaPaintBrush,
   FaEraser,
-  FaFont,
+  // FaFont,`
   FaUndoAlt,
   FaRedoAlt,
   FaDownload,
@@ -80,14 +80,14 @@ const Toolbar = () => {
       >
         <FaEraser />
       </div>
-      <div
+      {/* <div
         className={cx(classes.toolItem, {
           [classes.active]: activeToolItem === TOOL_ITEMS.TEXT,
         })}
         onClick={() => changeToolHandler(TOOL_ITEMS.TEXT)}
       >
         <FaFont />
-      </div>
+      </div> */}
       <div className={classes.toolItem} onClick={undo}>
         <FaUndoAlt />
       </div>

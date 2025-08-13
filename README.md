@@ -1,8 +1,57 @@
-# React + Vite
+# Project Name
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A brief description of your project goes here. This could be a drawing application, a web-based tool, or any other type of project based on the files shown.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Drawing Tool**: Includes a brush tool for creating artwork or annotations.
+- **React Integration**: Utilizes React and React Icons for the user interface.
+- **ESLint Configuration**: Comes with predefined linting rules for code quality.
+- **Vite Build Tool**: Fast and optimized development and production builds.
+
+## Installation
+
+1. Clone the repository:
+   ```bash
+   git clone [repository-url]
+   ```
+
+2. Navigate to the project directory:
+   ```bash
+   cd [project-name]
+   ```
+
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+4. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+## Project Structure
+
+- `src/`: Contains the main source code of the application.
+- `App.jsx`: The entry point of the application.
+- `vite.config.js`: Configuration for the Vite build tool.
+- `eslint.config.js`: ESLint configuration for code linting.
+- `package.json` & `package-lock.json`: Define project dependencies and scripts.
+
+## Scripts
+
+- `dev`: Start the development server.
+- `build`: Build the project for production.
+- `lint`: Run ESLint to check for code issues.
+
+## Dependencies
+
+- React
+- React Icons
+- Vite
+- ESLint
+
+## Contributing
+
+Contributions are welcome! Please fork the repository and submit a pull request with your changes.
