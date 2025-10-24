@@ -7,9 +7,9 @@ import {
   SIZE_TOOL_TYPES,
   STROKE_TOOL_TYPES,
   TOOL_ITEMS,
-} from "../constants";
-import toolboxContext from "../store/toolbox-context";
-import boardContext from "../store/board-context";
+} from "../../constants";
+import toolboxContext from "../../store/toolbox-context";
+import boardContext from "../../store/board-context";
 
 const Toolbox = () => {
   const { activeToolItem } = useContext(boardContext);

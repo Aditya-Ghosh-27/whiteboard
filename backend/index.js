@@ -2,11 +2,18 @@ const express = require('express');
 require('dotenv').config();
 const connectToDatabase = require('./config/db');
 const userRoutes = require('./routes/userRoutes');
+const canvasRoutes = require('./routes/canvasRoutes');
 const cors = require('cors');
 const app = express();
 
+
+// Middlewares
 // This will add the necessary headers to all incoming requests
-app.use(cors());
+const corsOptions = {
+    origin: 'http://localhost:5173',
+};
+
+app.use(cors(corsOptions));
 
 // Built-in middleware for parsing JSON
 app.use(express.json());
@@ -14,13 +21,15 @@ app.use(express.json());
 // Built-in middleware for parsing URL-encoded data
 app.use(express.urlencoded({ extended: true }));
 
+// Routes
+app.use('/api/users', userRoutes);
+app.use('/api/canvas', canvasRoutes);
+
 connectToDatabase();
 
-app.use('/api/users', userRoutes);
-
-app.get('/', (req, res) => {
-    res.send("API is working");
-});
+// app.get('/', (req, res) => {
+//     res.send("API is working");
+// });  
 
 const PORT = process.env.PORT || 8000;
 

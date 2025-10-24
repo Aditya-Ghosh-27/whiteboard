@@ -132,10 +132,41 @@ const boardReducer = (state, action) => {
         index: state.index + 1,
       };
     }
+    case BOARD_ACTIONS.SET_INITIAL_ELEMENTS: {
+      return {
+        ...state,
+        elements: action.payload.elements,
+        history: [action.payload.elements],
+      };
+    }
+    case BOARD_ACTIONS.SET_CANVAS_ID:
+      return {
+        ...state,
+        canvasId: action.payload.canvasId,
+      };
+    case BOARD_ACTIONS.SET_CANVAS_ELEMENTS:
+      return {
+        ...state,
+        elements: action.payload.elements || [],
+      };
+    case BOARD_ACTIONS.SET_HISTORY:
+      return {
+        ...state,
+        history: [action.payload.elements || []],
+      };
+    case BOARD_ACTIONS.SET_USER_LOGIN_STATUS:
+      return {
+        ...state,
+        isUserLoggedIn: action.payload.isUserLoggedIn,
+      };
+    
     default:
       return state;
   }
 };
+
+
+const isUserLoggedIn = !!localStorage.getItem('whiteboard_user_token');
 
 const initialBoardState = {
   activeToolItem: TOOL_ITEMS.BRUSH,
@@ -143,6 +174,7 @@ const initialBoardState = {
   elements: [],
   history: [[]],
   index: 0,
+  isUserLoggedIn: isUserLoggedIn,
 };
 
 const BoardProvider = ({ children }) => {
@@ -242,10 +274,29 @@ const BoardProvider = ({ children }) => {
     });
   }, []);
 
+  const setHistory = (elements) => {
+    dispatchBoardAction({
+      type: BOARD_ACTIONS.SET_HISTORY,
+      payload: {
+        elements,
+      }
+    })
+  }
+
+  const setUserLoginStatus = (isUserLoggedIn) => {
+    dispatchBoardAction({
+      type: BOARD_ACTIONS.SET_USER_LOGIN_STATUS,
+      payload: {
+        isUserLoggedIn,
+      }
+    })
+  }
+
   const boardContextValue = {
     activeToolItem: boardState.activeToolItem,
     elements: boardState.elements,
     toolActionType: boardState.toolActionType,
+    isUserLoggedIn: boardState.isUserLoggedIn,
     changeToolHandler,
     boardMouseDownHandler,
     boardMouseMoveHandler,
@@ -253,6 +304,8 @@ const BoardProvider = ({ children }) => {
     textAreaBlurHandler,
     undo: boardUndoHandler,
     redo: boardRedoHandler,
+    setHistory,
+    setUserLoginStatus,
   };
 
   return (
@@ -267,14 +320,3 @@ BoardProvider.propTypes = {
 };
 
 export default BoardProvider;
-
-
-
-
-
-
-
-
-
-
-
