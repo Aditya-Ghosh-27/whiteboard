@@ -25,7 +25,7 @@ const Login = () => {
         localStorage.setItem("whiteboard_user_token", data.token);
         setUserLoginStatus(true);
         navigate("/");
-        navigate(0);
+        // navigate(0);
       } else {
         let errorMessage = "Login failed";
 

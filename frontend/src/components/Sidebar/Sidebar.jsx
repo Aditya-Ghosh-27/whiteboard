@@ -7,6 +7,7 @@ import boardContext from "../../store/board-context";
 const Sidebar = () => {
   const [canvases, setCanvases] = useState([]);
   const token = localStorage.getItem("whiteboard_user_token");
+  console.log(token);
   const {
     canvasId,
     setCanvasId,
@@ -102,7 +103,7 @@ const Sidebar = () => {
       }
 
       await axios.delete(
-        `http://localhost:3030/api/canvas/delete/${id}`,
+        `http://localhost:3030/api/canvas/${id}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -140,7 +141,8 @@ const Sidebar = () => {
     }
   };
 
-  const handleCanvasClick = async (id) => {
+  const handleCanvasClick = (id) => {
+    console.log("canvas click");
     setCanvasId(id);
     navigate(`/${id}`);
   };
@@ -154,8 +156,8 @@ const Sidebar = () => {
     localStorage.removeItem("canvas_id");
     setCanvases([]);
     setUserLoginStatus(false);
-    navigate("/");
-    navigate(0);
+    navigate("/login");
+    // navigate(0);
   };
 
   const handleShare = async () => {
@@ -205,12 +207,12 @@ const Sidebar = () => {
               canvas._id === canvasId ? "selected" : ""
             }`}
           >
-            <span
+            <button
               className={classes.canvas_name}
               onClick={() => handleCanvasClick(canvas._id)}
             >
               {canvas._id}
-            </span>
+            </button>
             <button
               className={classes.delete_button}
               onClick={() => handleDeleteCanvas(canvas._id)}

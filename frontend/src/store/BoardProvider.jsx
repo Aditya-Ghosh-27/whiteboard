@@ -39,6 +39,9 @@ const boardReducer = (state, action) => {
       };
     }
     case BOARD_ACTIONS.DRAW_MOVE: {
+      if (state.elements.length === 0) {
+        return state;
+      }
       const { clientX, clientY } = action.payload;
       const newElements = [...state.elements];
       const index = state.elements.length - 1;
@@ -133,10 +136,11 @@ const boardReducer = (state, action) => {
       };
     }
     case BOARD_ACTIONS.SET_INITIAL_ELEMENTS: {
+      const elements = action.payload.elements || [];
       return {
         ...state,
-        elements: action.payload.elements,
-        history: [action.payload.elements],
+        elements: elements,
+        history: [elements],
       };
     }
     case BOARD_ACTIONS.SET_CANVAS_ID:
@@ -274,6 +278,24 @@ const BoardProvider = ({ children }) => {
     });
   }, []);
 
+  const setCanvasId = (canvasId) => {
+    dispatchBoardAction({
+      type: BOARD_ACTIONS.SET_CANVAS_ID,
+      payload: {
+        canvasId,
+      }
+    })
+  }
+
+  const setElements = (elements) => {
+    dispatchBoardAction({
+      type: BOARD_ACTIONS.SET_CANVAS_ELEMENTS,
+      payload: {
+        elements,
+      }
+    })
+  }
+
   const setHistory = (elements) => {
     dispatchBoardAction({
       type: BOARD_ACTIONS.SET_HISTORY,
@@ -304,8 +326,10 @@ const BoardProvider = ({ children }) => {
     textAreaBlurHandler,
     undo: boardUndoHandler,
     redo: boardRedoHandler,
+    setCanvasId,
     setHistory,
     setUserLoginStatus,
+    setElements,
   };
 
   return (

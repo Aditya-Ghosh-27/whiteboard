@@ -78,6 +78,17 @@ function Board({ id }) {
               },
             }
           );
+
+          if (!response.ok) {
+            // Handle unauthorized or other errors
+            if(response.status === 401 || response.status === 403) {
+              setIsAuthorized(false);
+              alert("You are not authorized to view this canvas.");
+            }
+            throw new Error("Could not load canvas data");
+          }
+
+          const data = await response.json();
           setCanvasId(id);
           setElements(response.formData.elements);
           setHistory(response.data.elements);
@@ -157,7 +168,7 @@ function Board({ id }) {
     }
   }, [toolActionType]);
 
-  console.log("Element: ", elements);
+  // console.log("Element: ", elements);
 
   const handleMouseDown = (event) => {
     if (!isAuthorized) return;

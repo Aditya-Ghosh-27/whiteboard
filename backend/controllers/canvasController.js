@@ -13,10 +13,10 @@ const createCanvas = async (req, res) => {
             elements: []
         });
 
-        await Canvas.Save();
+        await newCanvas.save();
         res.status(201).json({ message: "Canvas created successfully", canvasId: newCanvas._id });
     } catch(error) {
-        res.status().json({ error: "Failed to create canvas", details: error.message });
+        res.status(500).json({ error: "Failed to create canvas", details: error.message });
     }
 };
 
@@ -46,7 +46,7 @@ const updateCanvas = async (req, res) => {
 
         console.log("saved");
 
-        res.json({ message: "Canvas updated successfully "});
+        res.status(200).json({ message: "Canvas updated successfully "});
     } catch(error) {
         res.status(500).json({ error: "Failed to update canvas", details: error.message });
     }
@@ -100,7 +100,7 @@ const getUserCanvases = async (req, res) => {
 // To implement deletion, we first create a controller function that checks if the requesting user is the owner of the canvas. If they are, the canvas is deleted; otherwise, an error message is returned.
 const deleteCanvas = async (req, res) => {
     try {
-        const canvasId = req.params.id;
+        const canvasId = req.params.canvasId;
         const userId = req.userId;
 
         const canvas = await Canvas.findById(canvasId);

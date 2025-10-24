@@ -10,7 +10,8 @@ const app = express();
 // Middlewares
 // This will add the necessary headers to all incoming requests
 const corsOptions = {
-    origin: 'http://localhost:5173',
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
 };
 
 app.use(cors(corsOptions));
