@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import classes from "./Register.module.css";
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -15,7 +16,7 @@ const Register = () => {
       return;
     }
     try {
-      const response = await fetch("http://localhost:3030/api/users/register", {
+      const response = await fetch(`${BASE_URL}/api/users/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -1,5 +1,6 @@
 import axios from "axios";
-const API_BASE_URL = "http://localhost:5000/api/canvas"; 
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+const API_BASE_URL = `${BASE_URL}/api/canvas`; 
 
 const token = localStorage.getItem('whiteboard_user_token')
 // const canvasId = localStorage.getItem('canvas_id')

@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import classes from "./Sidebar.module.css";
 import boardContext from "../../store/board-context";
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
 const Sidebar = () => {
   const [canvases, setCanvases] = useState([]);
@@ -42,7 +43,7 @@ const Sidebar = () => {
   const handleCreateCanvas = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:3030/api/canvas/create",
+        `${BASE_URL}/api/canvas/create`,
         {},
         {
           headers: {
@@ -67,7 +68,7 @@ const Sidebar = () => {
   const fetchCanvases = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3030/api/canvas/list",
+        `${BASE_URL}/api/canvas/list`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -103,7 +104,7 @@ const Sidebar = () => {
       }
 
       await axios.delete(
-        `http://localhost:3030/api/canvas/${id}`,
+        `${BASE_URL}/api/canvas/${id}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -171,7 +172,7 @@ const Sidebar = () => {
       setSuccess(""); // Clear previous success message
 
       const response = await axios.put(
-        `http://localhost:3030/api/canvas/share/${canvasId}`,
+        `${BASE_URL}/api/canvas/share/${canvasId}`,
         { email },
         {
           headers: { Authorization: `Bearer ${token}` },

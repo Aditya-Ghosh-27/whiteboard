@@ -12,6 +12,8 @@ import boardContext from "../../store/board-context";
 import toolboxContext from "../../store/toolbox-context";
 import classes from "./Board.module.css";
 // import socket from "../../utils/socket";
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+
 
 function Board({ id }) {
   const canvasRef = useRef();
@@ -71,7 +73,7 @@ function Board({ id }) {
       if (id && token) {
         try {
           const response = await fetch(
-            `http://localhost:3030/api/canvas/load/${id}`,
+            `${BASE_URL}/api/canvas/load/${id}`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -88,7 +90,7 @@ function Board({ id }) {
             throw new Error("Could not load canvas data");
           }
 
-          const data = await response.json();
+          // const data = await response.json();
           setCanvasId(id);
           setElements(response.formData.elements);
           setHistory(response.data.elements);
